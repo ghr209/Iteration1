@@ -1,5 +1,5 @@
 package sample;
-
+// hent libaries
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -8,62 +8,62 @@ import javafx.scene.layout.GridPane;
 import javafx.geometry.Pos;
 
 public class Main extends Application {
-    // We declare the "Text field/area" here in order to be able to use them in the clearFields method;
-    TextField textCprNumber = new TextField();  // a TextField is a single lined field
-    TextArea resultField = new TextArea();      // a TextArea is a multiline text field - more advanced than TextField
-    DataValidator dataValidator = new DataValidator(); // create and instance of the  DataValidator class from week 2
+    // Vi definerer "Text field/area" her så de kan bruges i clearFields methoden;
+    TextField textCprNumber = new TextField();  // Et tekstfelt med en linje (som i vores tilfælde vil ligge i indtast CPR felt)
+    TextArea resultField = new TextArea();
+    DataValidator dataValidator = new DataValidator(); // Vi genbruger DataValidator class fra øvelserne.
     @Override
     public void start(Stage primaryStage) {     // a Stage is the main window for a JavaFX application
         primaryStage.setTitle("Enter CPR number and hit the button for accessing patient information, regarding tests, sensor data");   // set the title shown int th title bar
-        GridPane grid = new GridPane();         // create a GridPane for a nice even flexible screen layout
-        grid.setAlignment(Pos.CENTER);          // Align the grid to the center of the application window
-        Label CPR = new Label("CPR: ");      // create a text label displaying "CPR"
-        grid.add(CPR, 0, 0);              // put the newly created label in the top left corner of the grid (0,0)
-        grid.setHgap(10);                       // set the horizontal gap between the fields to 10 pixels
-        grid.setVgap(10);                       // set the vertical gap between the fields to 10 pixels
-        //grid.setGridLinesVisible(true);       // nice if you want to check the grid layout
+        GridPane grid = new GridPane();         // Laver et  GridPane for pænt/fleksibelt layout
+        grid.setAlignment(Pos.CENTER);          // Sørge for at  grid  forholder sig til center(midten) af applikationsvinduet.
+        Label CPR = new Label("CPR: ");      // Laver et label som viser "CPR"
+        grid.add(CPR, 0, 0);
+        grid.setHgap(10);                       // Visualisering  (10 pixels)--> Horisontal
+        grid.setVgap(10);                       // Visualisering  (10 pixels)--> Vertical
 
-        textCprNumber.setPromptText("Enter your patient's CPR Number");   // display some useful text to the user
-        textCprNumber.setFocusTraversable(false);   // needed to be able to display the initial PromptText
-        textCprNumber.setMaxWidth(150);         // Make sure the CPR field doesn't get too wide
-        textCprNumber.setTooltip(new Tooltip("CPR Number must be in the format ######-####")); // mouseover tooltip
+
+        textCprNumber.setPromptText("Enter your patient's CPR Number");   // display brugelig tekst til brugeren
+        textCprNumber.setFocusTraversable(false);
+        textCprNumber.setMaxWidth(150);         // Max bredde på CPR field.
+        textCprNumber.setTooltip(new Tooltip("CPR Number must be in the format ######-####")); // Når man bevæger musen henover feltet, vises denne besked.
         resultField.setPromptText("Enter a patient's CPR number in the above field and click on 'Access patient information'. This field will then show if the format of the CPR number can be validated");
-        resultField.setPrefHeight(100);         // set the preferable height of the result field
-        resultField.setPrefWidth(300);          // set the preferable width of the result field
-        resultField.setEditable(false);         // make sure the user can't edit the result field
-        resultField.setWrapText(true);          // ensure the text can be wrapped in the result field
-        Button buttonAccess = new Button("Access patient information");          // create a clickable button
-        Button buttonClearAll = new Button("Clear All");    // create another clickable button
+        resultField.setPrefHeight(100);         // højde af  resultat   feltet
+        resultField.setPrefWidth(300);          //  bredde af  resultat   feltet
+        resultField.setEditable(false);         // Sørge for at man ikke kan ændre i resultat feltet
+        resultField.setWrapText(true);          //
+        Button buttonAccess = new Button("Access patient information");  // Vi laver en ny knap, man kan trykke på
+        Button buttonClearAll = new Button("Clear All");    // Vi laver en ny knap, man kan trykke på
 
-        // now create an event handler which will be called when the button is clicked
+        // now create an event --> kaldes når knappen er blevet trykket på
         buttonAccess.setOnMouseClicked(event -> {
             if (dataValidator.isValidCPR(textCprNumber.getText())) {
-                // we have a valid input which we display in the result field
+                // Når input er korrekt/valid vises nedenstående i  "result field"
                 String text = textCprNumber.getText();
-                resultField.setText("CPR number: " + text);
+                resultField.setText("CPR number: " + text + ","+ " " + "CPR is in correct format, therefore u can access patient information");
             }
             else {
-                // display a warning to the user
-                resultField.setText("Patient-CPR number is not in correct format");
+                // Hvis CPR er forkert format vil nedenstående advarsel vises
+                resultField.setText("Patient-CPR number is not in correct format, therefore patient information can not be accessed");
             }
         });
 
         buttonClearAll.setOnMouseClicked(event -> {
-            clearFields();  // call the method which clears all fields (see below)
+            clearFields();  // Funktionen som clear felterne kaldes.
         });
 
-        // Now place the remaining fields in the grid
-        grid.add(textCprNumber, 1, 0);  // second column, first row
-        grid.add(buttonAccess, 2, 0);    // third column, first row
-        grid.add(resultField, 1, 1);    // first column, second row
-        grid.add(buttonClearAll, 2, 4); // third column, fifth row
+        // Placering af knapperne;
+        grid.add(textCprNumber, 1, 0);
+        grid.add(buttonAccess, 2, 0);
+        grid.add(resultField, 1, 1);
+        grid.add(buttonClearAll, 2, 4);
 
-        Scene scene = new Scene(grid, 600, 400); // create an scene window 600 x 400 pixels
-        primaryStage.setScene(scene);                   // add the scene to the stage / application window
-        primaryStage.show();                 // display the stage - important! otherwise nothing happens :-)
+        Scene scene = new Scene(grid, 600, 400); // Format
+        primaryStage.setScene(scene);                   // tilføjer en  scene til stage(applikationsvindue)
+        primaryStage.show();                 // Vi viser stage ved show (som python)
     }
 
-    public void clearFields() { // method to clear text fields
+    public void clearFields() { // metode som gør at de to felter bliver bliver tomme/clear, en form for slet-knap
         textCprNumber.clear();
         resultField.clear();
     }
